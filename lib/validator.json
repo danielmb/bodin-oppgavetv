@@ -1,0 +1,42 @@
+{
+  "$jsonSchema": {
+    "required": ["what", "where", "priority", "created_at", "updated_at"],
+    "properties": {
+      "what": {
+        "bsonType": "string",
+        "description": "must be a string"
+      },
+      "where": {
+        "bsonType": "string",
+        "description": "must be a string"
+      },
+      "priority": {
+        "bsonType": "int",
+        "maximum": 3,
+        "minimum": 0,
+        "description": "must be a int between 0-3"
+      },
+      "start": {
+        "bsonType": "date",
+        "description": "must be a date"
+      },
+      "doneby": {
+        "bsonType": "date",
+        "description": "must be a date"
+      },
+      "done": {
+        "bsonType": "date",
+        "description": "must be a date"
+      },
+      "created_at": {
+        "bsonType": "date",
+        "description": "must be a date"
+      },
+      "updated_at": {
+        "bsonType": "date",
+        "description": "must be a date"
+      }
+    },
+    "additionalProperties": false
+  }
+}
