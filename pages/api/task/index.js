@@ -1,27 +1,47 @@
 import nextConnect from 'next-connect';
 import { connectToDatabase } from '../../../lib/db';
+import moment from 'moment';
+
 const apiRoute = nextConnect({
-  onError(err, req, res) {
+  async onError(err, req, res) {
+    try {
+      let { db } = await connectToDatabase();
+      await db.collection('errors').insertOne({
+        ...{
+          err,
+        },
+        ...{
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
+      });
+    } catch (error) {
+      console.error("NOTICE: couldn't log error to database");
+    }
     console.log(err);
     res.status(500).json({ error: err });
   },
   onNoMatch(req, res) {
-    console.log('no match');
     res.status(404).json({ error: 'Not found' });
   },
 });
 
-apiRoute.get(async () => {
-  console.log('!');
+apiRoute.get(async (req, res) => {
   let { db } = await connectToDatabase();
 
   let results = await db.collection('tasks').find({}).toArray();
-  return results;
+  if (results.error) return res.status(500).json({ error: results.error });
+  return res.status(200).json(results);
 });
 apiRoute.post(async (req, res) => {
   let { db } = await connectToDatabase();
   console.log('!');
   let body = req.body;
+  for (let d of ['start', 'doneby', 'done']) {
+    if (body[d]) {
+      body[d] = moment(body[d]).toDate();
+    }
+  }
   if (typeof body !== 'object')
     return res.status(400).json({ error: 'invalid body' });
   if (body.constructor !== Object)
