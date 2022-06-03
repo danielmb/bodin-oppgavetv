@@ -65,7 +65,6 @@ apiRoute.put(async (req, res) => {
     }
   }
 
-  console.log(body);
   let result = await db.collection('tasks').updateOne(
     { _id: ObjectId(id) },
     {
@@ -77,6 +76,7 @@ apiRoute.put(async (req, res) => {
       },
     },
   );
+
   console.log(result);
   if (!result.acknowledged)
     return res.status(500).json({ error: 'update failed' });
