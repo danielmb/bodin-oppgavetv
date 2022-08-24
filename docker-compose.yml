@@ -14,7 +14,7 @@ services:
     image: mongo-express
     ports:
       - "8081:8081"
-    -environment:
+    environment:
       - ME_CONFIG_MONGODB_ADMIN_USERNAME=root
       - ME_CONFIG_MONGODB_ADMIN_PASSWORD=dev
       - ME_CONFIG_MONGODB_URL=mongodb://root:dev@mongo:27017/
