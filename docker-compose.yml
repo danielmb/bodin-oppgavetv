@@ -1,0 +1,20 @@
+version: '3'
+services: 
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+  mongo:
+    image: "mongo"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=dev
+    restart: always
+  mongo-express: 
+    image: mongo-express
+    ports:
+      - "8081:8081"
+    -environment:
+      - ME_CONFIG_MONGODB_ADMIN_USERNAME=root
+      - ME_CONFIG_MONGODB_ADMIN_PASSWORD=dev
+      - ME_CONFIG_MONGODB_URL=mongodb://root:dev@mongo:27017/
